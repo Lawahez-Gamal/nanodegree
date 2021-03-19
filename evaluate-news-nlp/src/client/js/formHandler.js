@@ -4,79 +4,42 @@ function handleSubmit(event) {
     // check what text was put into the form field
     let formText = document.getElementById('name').value
 
-    Client.checkForName(formText)
+    if(Client.urlValidator(formText)){
+
+      const text = formText;
 
     console.log("::: Form Submitted :::")
-    fetch('http://localhost:8081/test')
-    .then(res => {
-        return res.json()
-    })
-    .then(function(data) {
-        document.getElementById('results').innerHTML = data.message
-    })
+    // fetch('http://localhost:8081/test')
+    // .then(res => {
+    //     return res.json()
+    // })
+    // .then(function(data) {
+    //     document.getElementById('results').innerHTML = data.message
+    // })
 
-    fetch('http://newsapi.org/v2/top-headlines?country=eg&apiKey=350c5ee5a4b44f428981b8f8e2eb4b33',{})
-    .then(
-      res=>{
-      if(res.status == 200){
-        return res.json()
-      }
-      else throw new Error('server error')
-    })
-    .then(data =>{
+    fetch('http://localhost:8081/sentiment',{
+      method: 'POST',
+      credentials: 'same-origin',
+      mode: 'cors',
+      headers: {
+          'Content-Type': 'application/json',
+          },
+          body:JSON.stringify({text})
+          
+  })
+  .then(res => res.json())
+  .then(function(res) {
+      console.log(res)
+      document.getElementById('agreement').innerHTML = `Agreement: ${res.agreement}`;
+      document.getElementById('confidence').innerHTML = `Confidence: ${res.confidence}`;
+      document.getElementById('subjectivity').innerHTML = `Subjectivity ${res.subjectivity}`;
+      document.getElementById('irony').innerHTML = `Irony: ${res.irony}`;
       
-        console.log(data.articles)
-         
-        displayNews(data)
-     
-     
-    })
-    .catch(e=>console.log(e))
-    
-
-//Function to create elements
-const newElement = function(eleType, eleContent, eleClasses){
-   let ele = document.createElement(eleType)
-     ele.innerHTML = eleContent
-    eleClasses.forEach(c=> ele.classList.add(c))
-    return ele
-  }
-  
-  
-  //function to display data to html
-  const displayNews = function(data){
-      data.articles.map(article => {
-      const app =  document.querySelector('#app');
-      app.setAttribute('class', 'row');
-  
-      const container = newElement('div','',['p-3','col-md-4','d-flex']);
-     
-      app.appendChild(container);
-      
-        const card = newElement('div','',[]);
-        card.setAttribute('class', 'card w-80');
-    
-        const postImage = newElement('img',`${article.urlToImage}`,[]);
-        postImage.src = `${article.urlToImage}`
-    
-        postImage.setAttribute('class', 'card-img-top')
-  
-        const postTitle= newElement('h4',`${article.title}`,[]);
-        
-     
-        const postAuthor= newElement('a',`${article.author}`,[]);
-        postAuthor.href = `${article.author}`
-    
-        const postDescription= newElement('p',`${article.description}`,[]);
-      
-        container.appendChild(card);
-        card.appendChild(postImage);
-        card.appendChild(postTitle);
-        card.appendChild(postAuthor);
-        card.appendChild(postDescription);
-       
-      }).join(""); 
-      
-  }
+  })
+ }
+ else{
+  alert('could not fetch data ');
 }
+}
+
 export { handleSubmit }
