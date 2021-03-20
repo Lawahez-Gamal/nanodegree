@@ -13,17 +13,19 @@ const app = express()
 
 dotenv.config();
 
-app.use(cors());
+app.use(cors())
 
-app.use(express.json());
+app.use(express.json())
 
-app.use(bodyParser.json());
+app.use(bodyParser.json())
 
 const axios = require('axios')
 
 app.use(bodyParser.urlencoded({extended: true}))
 
 app.use(express.static('dist'))
+
+
 
 console.log(__dirname)
 
@@ -32,31 +34,38 @@ app.get('/', function (req, res) {
     //res.sendFile(path.resolve('src/client/views/index.html'))
 })
 
-const apiKey = process.env.api_key;
 
-app.post('/sentiment', async(req, res) => {
-    try {
-        const text = req.body.text;
+app.post("/sentiment",async(req,res)=>{
 
-        const API_URL = `https://api.meaningcloud.com/sentiment-2.1?key=${apiKey}&lang=en&url=${text}&model=general`
+    try{
+        const url = req.body.text;
 
-        const response = await fetch(API_URL,{
+        apiKey = process.env.api_key;
+
+        api_url = `https://api.meaningcloud.com/sentiment-2.1?key=${apiKey}&url=${url}&lang=en&model=general`;
+
+        const resp = await fetch(api_url,{
             method: "POST",
             headers: { "Content-Type": "application/json" }
-        })  
-        const data = await response.json()
-       console.log(`responsed data from API: ${data}`)
-        const responseData = {
+        }) 
+        
+        const data =  resp.json()
+        console.log(`responsed data : ${data}`)
+
+         const resData = {
             
-            agreement:data.agreement,
-            confidence: data.confidence,
-            irony: data.irony,
-            subjectivity: data.subjectivity
-        }
-        res.send(responseData)
-        console.log(data)
-    } catch (e) {
-        console.log(`error ${e}`)
+             agreement:data.agreement,
+             confidence: data.confidence,
+             irony: data.irony,
+              subjectivity: data.subjectivity
+            
+         }
+         res.send(resData)
+         console.log(data)
+    }
+    catch(e){
+        console.log(e);
+        res.status(500).send("There is an error"+e);
     }
 })
 
@@ -68,5 +77,3 @@ app.listen(8081, function () {
 app.get('/test', function (req, res) {
     res.send(mockAPIResponse)
 })
-
-module.exports = app;
