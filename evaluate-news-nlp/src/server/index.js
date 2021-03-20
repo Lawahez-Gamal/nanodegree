@@ -5,8 +5,6 @@ const cors  = require('cors');
 
 const bodyParser = require("body-parser")
 
-const fetch = require('node-fetch');
-
 const mockAPIResponse = require('./mockAPI.js');
 
 const app = express()
@@ -34,34 +32,25 @@ app.get('/', function (req, res) {
     //res.sendFile(path.resolve('src/client/views/index.html'))
 })
 
+  
 
 app.post("/sentiment",async(req,res)=>{
 
     try{
+        apiKey = process.env.api_key;
+        // console.log(process.env.api_key);
+
         const url = req.body.text;
 
-        apiKey = process.env.api_key;
+         api_url = `https://api.meaningcloud.com/sentiment-2.1?key=2ab2eb175ba8fe2e03d0566a124e9b94&of=json&txt=${url}&model=general&lang=en`;
 
-        api_url = `https://api.meaningcloud.com/sentiment-2.1?key=${apiKey}&url=${url}&lang=en&model=general`;
+        const resp = await axios.get(api_url);
 
-        const resp = await fetch(api_url,{
-            method: "POST",
-            headers: { "Content-Type": "application/json" }
-        }) 
-        
-        const data =  resp.json()
-        console.log(`responsed data : ${data}`)
+        const{ agreement,subjectivty,confidence,irony} = resp.data;
 
-         const resData = {
-            
-             agreement:data.agreement,
-             confidence: data.confidence,
-             irony: data.irony,
-              subjectivity: data.subjectivity
-            
-         }
-         res.send(resData)
-         console.log(data)
+        res.send({ agreement,subjectivty,confidence,irony});
+
+        console.log(resp.data)
     }
     catch(e){
         console.log(e);

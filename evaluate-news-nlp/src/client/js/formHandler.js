@@ -13,8 +13,8 @@ function handleSubmit(event) {
     // .then(res => {
     //     return res.json()
     // })
-    // .then(function(data) {
-    //     document.getElementById('results').innerHTML = data.message
+    // .then(function(res) {
+    //     document.getElementById('results').innerHTML = res.message
     // })
 
     fetch('http://localhost:8081/sentiment',{
@@ -28,16 +28,16 @@ function handleSubmit(event) {
           
   })
   .then(res => res.json())
-  .then(function(data) {
-      console.log(data)
-      document.getElementById('agreement').innerHTML = `Agreement: ${data.agreement}`;
-      document.getElementById('confidence').innerHTML = `Confidence: ${data.confidence}`;
-      document.getElementById('irony').innerHTML = `Irony: ${data.irony}`;
-      document.getElementById('subjectivity').innerHTML = `Subjectivity ${data.subjectivity}`;
+  .then(function(res) {
+      console.log(res)
+      document.getElementById('agreement').innerHTML = `Agreement: ${res.agreement}`;
+      document.getElementById('confidence').innerHTML = `Confidence: ${res.confidence}`;
+      document.getElementById('irony').innerHTML = `Irony: ${res.irony}`;
+      // document.getElementById('subjectivity').innerHTML = `Subjectivity ${res.subjectivity}`;
       
   })
  }else{
-     alert('could not fetch data ');
+     alert('could not fetch res ');
  }
 
 }
