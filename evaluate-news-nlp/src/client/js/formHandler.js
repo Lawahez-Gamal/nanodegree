@@ -28,18 +28,18 @@ function handleSubmit(event) {
           
   })
   .then(res => res.json())
-  .then(function(res) {
-      console.log(res)
-      document.getElementById('agreement').innerHTML = `Agreement: ${res.agreement}`;
-      document.getElementById('confidence').innerHTML = `Confidence: ${res.confidence}`;
-      document.getElementById('subjectivity').innerHTML = `Subjectivity ${res.subjectivity}`;
-      document.getElementById('irony').innerHTML = `Irony: ${res.irony}`;
+  .then(function(data) {
+      console.log(data)
+      document.getElementById('agreement').innerHTML = `Agreement: ${data.agreement}`;
+      document.getElementById('confidence').innerHTML = `Confidence: ${data.confidence}`;
+      document.getElementById('irony').innerHTML = `Irony: ${data.irony}`;
+      document.getElementById('subjectivity').innerHTML = `Subjectivity ${data.subjectivity}`;
       
   })
+ }else{
+     alert('could not fetch data ');
  }
- else{
-  alert('could not fetch data ');
-}
+
 }
 
 export { handleSubmit }

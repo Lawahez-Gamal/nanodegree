@@ -1,6 +1,6 @@
 const formHandler = require('../client/js/formHandler');
 
-test('test handleSumit function', () => {
+test('test handleSumit function', async() => {
     // test handle submit function if it is defined
-    expect(formHandler.handleSubmit).toBeDefined();
+    await expect(formHandler.handleSubmit).toBeDefined();
 })

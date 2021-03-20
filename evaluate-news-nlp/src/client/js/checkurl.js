@@ -9,4 +9,4 @@ function urlValidator(url) {
  }
 
 
-export {urlValidator}
+export { urlValidator }
