@@ -46,9 +46,9 @@ app.post("/sentiment",async(req,res)=>{
 
         const resp = await axios.get(api_url);
 
-        const{ agreement,subjectivty,confidence,irony} = resp.data;
+        const{ agreement,confidence,irony} = resp.data;
 
-        res.send({ agreement,subjectivty,confidence,irony});
+        res.send({ agreement,confidence,irony});
 
         console.log(resp.data)
     }
