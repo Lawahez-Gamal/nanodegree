@@ -42,7 +42,7 @@ app.post("/sentiment",async(req,res)=>{
 
         const url = req.body.text;
 
-         api_url = `https://api.meaningcloud.com/sentiment-2.1?key=2ab2eb175ba8fe2e03d0566a124e9b94&of=json&txt=${url}&model=general&lang=en`;
+         api_url = `https://api.meaningcloud.com/sentiment-2.1?key=${apiKey}&of=json&txt=${url}&model=general&lang=en`;
 
         const resp = await axios.get(api_url);
 
